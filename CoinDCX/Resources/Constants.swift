@@ -10,6 +10,7 @@ import Foundation
 struct Constants{
     public static let SPLASH_TIMER = 1
     public static let marketDetailCell = "MarketCell"
+    public static let filterCell = "FilterCell"
     
     // BASE URL
     public static let baseUrl = "https://api.coindcx.com/"
