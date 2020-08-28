@@ -17,11 +17,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var byCoinNameFilter: UIImageView!
     @IBOutlet weak var hourChangeFilter: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     //MARK:- Variables
     
     private let dataSource = MarketListDataSource()
     private let delegate = MarketTableViewDelegate()
+    private let filterDataSource = MarketFilterDataSource()
+    private let filterDelegate = MarketFilterDelegate()
     
     /*
      - Setting up the viewController Presenter
@@ -29,7 +32,9 @@ class ViewController: UIViewController {
      */
     lazy var viewControllerPresener : ViewControllerPresener = {
         let presenter = ViewControllerPresener(marketDataSource: dataSource,
-                                               marketDelegate: delegate)
+                                               marketDelegate: delegate,
+                                               marketFilterDataSource: filterDataSource,
+                                               marketFilterDelegate: filterDelegate)
         return presenter
     }()
     
@@ -56,6 +61,9 @@ class ViewController: UIViewController {
         //Setting up the tableView
         setupTableView()
         
+        //Setting up the collectionView
+        setupCollectionView()
+        
         //Setting up the delegate methods
         setupDelegates()
     }
@@ -77,6 +85,24 @@ class ViewController: UIViewController {
                            forCellReuseIdentifier: Constants.marketDetailCell)
         
     }
+    
+    //Settnig up the collectionView
+    private func setupCollectionView(){
+        
+        //Setting up the collectionView cell XIB
+        setupCollectionViewXIB()
+        
+        collectionView.dataSource = filterDataSource
+        collectionView.delegate = filterDelegate
+    }
+    
+    //Setting up the collectionView cell XIB
+    private func setupCollectionViewXIB(){
+        collectionView.register(UINib(nibName: StoryboardAnXIBEnum.marketFilterXIB.storyboardName(),
+                                      bundle: nil),
+                                forCellWithReuseIdentifier: Constants.filterCell)
+    }
+    
     
     //Setting up the delegate method
     private func setupDelegates(){
@@ -100,5 +126,9 @@ extension ViewController : ViewControllerDelegate {
     
     func failedToLoadData() {
         print("We're facing some technical issue")
+    }
+    
+    func reloadCollectionView() {
+        collectionView.reloadData()
     }
 }

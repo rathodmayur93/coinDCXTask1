@@ -97,12 +97,12 @@ class MarketTableViewCell: UITableViewCell {
         
         //Setting up the UIs visible element
         coinPairLabel.attributedText = NSMutableAttributedString()
-                                       .bold(short)
-                                       .normal("/"+target)
+            .bold(short)
+            .normal("/"+target)
         coinNameLabel.text = name
-//        coinValueLabel.attributedText = NSMutableAttributedString()
-//                                         .bold("Last Price: ")
-//                                        .normal(price)
+        //        coinValueLabel.attributedText = NSMutableAttributedString()
+        //                                         .bold("Last Price: ")
+        //                                        .normal(price)
         coinValueLabel.text = "Last Price: " + price
         percentageLabel.text = value + "%"
         
@@ -121,7 +121,9 @@ class MarketTableViewCell: UITableViewCell {
     private func setupOverlayView(percentage value : Float, alphaValue : inout Float){
         
         //Ternary conditional opertator to set the color of the percentage background view
-        percentageView.backgroundColor = value <= 0 ? (UIColor(named: "loss")?.withAlphaComponent(CGFloat(alphaValue)) ?? UIColor.lightGray) : UIColor(named: "gain")?.withAlphaComponent(CGFloat(alphaValue)) ?? UIColor.lightGray
+        percentageView.backgroundColor = value <= 0 ?
+            (UIColor(named: Colors.loss.colorName())?.withAlphaComponent(CGFloat(alphaValue)) ?? UIColor.lightGray) :
+            UIColor(named: Colors.gain.colorName())?.withAlphaComponent(CGFloat(alphaValue)) ?? UIColor.lightGray
     }
     
 }

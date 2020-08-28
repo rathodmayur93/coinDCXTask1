@@ -16,6 +16,12 @@
 		77022E6824F84BC80010872F /* AllExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77022E6724F84BC80010872F /* AllExtension.swift */; };
 		773087E424F76BC2006C8E7F /* MarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773087E224F76BC2006C8E7F /* MarketTableViewCell.swift */; };
 		773087E524F76BC2006C8E7F /* MarketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 773087E324F76BC2006C8E7F /* MarketTableViewCell.xib */; };
+		773BE71F24F9455100956E51 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE71D24F9455100956E51 /* FilterCollectionViewCell.swift */; };
+		773BE72024F9455100956E51 /* FilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 773BE71E24F9455100956E51 /* FilterCollectionViewCell.xib */; };
+		773BE72224F947BA00956E51 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE72124F947BA00956E51 /* Colors.swift */; };
+		773BE72524F9492B00956E51 /* MarketFilterDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE72424F9492B00956E51 /* MarketFilterDataSource.swift */; };
+		773BE72824F951B800956E51 /* FilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE72724F951B800956E51 /* FilterModel.swift */; };
+		773BE72A24F9544B00956E51 /* MarketFilterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE72924F9544B00956E51 /* MarketFilterDelegate.swift */; };
 		774639F724F6A0A5009015C6 /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774639F224F6A0A5009015C6 /* RequestService.swift */; };
 		774639F824F6A0A5009015C6 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774639F324F6A0A5009015C6 /* RequestMethod.swift */; };
 		774639F924F6A0A5009015C6 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774639F424F6A0A5009015C6 /* RequestHandler.swift */; };
@@ -78,6 +84,12 @@
 		770BCCBB24F61304003ACF0B /* SwiftSVG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftSVG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		773087E224F76BC2006C8E7F /* MarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewCell.swift; sourceTree = "<group>"; };
 		773087E324F76BC2006C8E7F /* MarketTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarketTableViewCell.xib; sourceTree = "<group>"; };
+		773BE71D24F9455100956E51 /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		773BE71E24F9455100956E51 /* FilterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterCollectionViewCell.xib; sourceTree = "<group>"; };
+		773BE72124F947BA00956E51 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		773BE72424F9492B00956E51 /* MarketFilterDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketFilterDataSource.swift; sourceTree = "<group>"; };
+		773BE72724F951B800956E51 /* FilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterModel.swift; sourceTree = "<group>"; };
+		773BE72924F9544B00956E51 /* MarketFilterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketFilterDelegate.swift; sourceTree = "<group>"; };
 		774639F224F6A0A5009015C6 /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		774639F324F6A0A5009015C6 /* RequestMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		774639F424F6A0A5009015C6 /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
@@ -172,10 +184,37 @@
 		773087E124F76AE5006C8E7F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				773BE71A24F9451400956E51 /* MarketFilterCollectionViewCell */,
+				773BE71924F944F600956E51 /* MarketTableViewCell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		773BE71924F944F600956E51 /* MarketTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
 				773087E224F76BC2006C8E7F /* MarketTableViewCell.swift */,
 				773087E324F76BC2006C8E7F /* MarketTableViewCell.xib */,
 			);
-			path = View;
+			path = MarketTableViewCell;
+			sourceTree = "<group>";
+		};
+		773BE71A24F9451400956E51 /* MarketFilterCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				773BE71D24F9455100956E51 /* FilterCollectionViewCell.swift */,
+				773BE71E24F9455100956E51 /* FilterCollectionViewCell.xib */,
+			);
+			path = MarketFilterCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		773BE72324F9490000956E51 /* CollectionViewMethods */ = {
+			isa = PBXGroup;
+			children = (
+				773BE72424F9492B00956E51 /* MarketFilterDataSource.swift */,
+				773BE72924F9544B00956E51 /* MarketFilterDelegate.swift */,
+			);
+			path = CollectionViewMethods;
 			sourceTree = "<group>";
 		};
 		774639EE24F69FB0009015C6 /* Splash */ = {
@@ -242,6 +281,7 @@
 			children = (
 				77463A0524F6A2F5009015C6 /* MarketDetailModel.swift */,
 				7758C66A24F6F0E600DA7F68 /* TickerDetailModel.swift */,
+				773BE72724F951B800956E51 /* FilterModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -250,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				77B45ECD24F7D97B00F92CB1 /* TableViewMethods */,
+				773BE72324F9490000956E51 /* CollectionViewMethods */,
 				77463A0824F6B8DE009015C6 /* ViewControllerPresenter.swift */,
 			);
 			path = Presenter;
@@ -319,6 +360,7 @@
 				77463A0A24F6D24A009015C6 /* InternetConnectionManager.swift */,
 				77463A0C24F6D35F009015C6 /* Utility.swift */,
 				77022E6724F84BC80010872F /* AllExtension.swift */,
+				773BE72124F947BA00956E51 /* Colors.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -471,6 +513,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				778C7BCA24F61137008450B7 /* LaunchScreen.storyboard in Resources */,
+				773BE72024F9455100956E51 /* FilterCollectionViewCell.xib in Resources */,
 				778C7BC724F61137008450B7 /* Assets.xcassets in Resources */,
 				778C7BC524F61134008450B7 /* Main.storyboard in Resources */,
 				773087E524F76BC2006C8E7F /* MarketTableViewCell.xib in Resources */,
@@ -588,12 +631,14 @@
 				778C7BC224F61134008450B7 /* ViewController.swift in Sources */,
 				778C7BBE24F61134008450B7 /* AppDelegate.swift in Sources */,
 				77463A0924F6B8DE009015C6 /* ViewControllerPresenter.swift in Sources */,
+				773BE72A24F9544B00956E51 /* MarketFilterDelegate.swift in Sources */,
 				77463A0624F6A2F5009015C6 /* MarketDetailModel.swift in Sources */,
 				774639F724F6A0A5009015C6 /* RequestService.swift in Sources */,
 				774639F824F6A0A5009015C6 /* RequestMethod.swift in Sources */,
 				77B45ED124F7E4AD00F92CB1 /* MarketTableViewDelegate.swift in Sources */,
 				774639FF24F6A0DA009015C6 /* ErrorResult.swift in Sources */,
 				77AD2B9224F69BA1007998B5 /* ViewControllersEnum.swift in Sources */,
+				773BE72224F947BA00956E51 /* Colors.swift in Sources */,
 				7777DB0B24F613EA00F444B5 /* SplashViewController.swift in Sources */,
 				774639F924F6A0A5009015C6 /* RequestHandler.swift in Sources */,
 				7758C66924F6F01300DA7F68 /* GET+TickerAPI.swift in Sources */,
@@ -603,11 +648,14 @@
 				7758C66B24F6F0E600DA7F68 /* TickerDetailModel.swift in Sources */,
 				774639FB24F6A0A5009015C6 /* ServiceParameters.swift in Sources */,
 				773087E424F76BC2006C8E7F /* MarketTableViewCell.swift in Sources */,
+				773BE72524F9492B00956E51 /* MarketFilterDataSource.swift in Sources */,
 				77B45ECF24F7D9AC00F92CB1 /* MarketListDataSource.swift in Sources */,
 				77463A0B24F6D24A009015C6 /* InternetConnectionManager.swift in Sources */,
 				77463A0324F6A22D009015C6 /* GET+MarketDetailAPI.swift in Sources */,
 				77463A0024F6A0DA009015C6 /* Result.swift in Sources */,
 				77022E6824F84BC80010872F /* AllExtension.swift in Sources */,
+				773BE72824F951B800956E51 /* FilterModel.swift in Sources */,
+				773BE71F24F9455100956E51 /* FilterCollectionViewCell.swift in Sources */,
 				779F5F2524F69068008FC3E8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

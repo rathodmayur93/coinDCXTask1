@@ -10,6 +10,7 @@ import Foundation
 protocol ViewControllerDelegate {
     func reloadTableView()
     func failedToLoadData()
+    func reloadCollectionView()
 }
 
 class ViewControllerPresener {
@@ -24,6 +25,9 @@ class ViewControllerPresener {
     //Defining the weak property here to avoid the Strong Reference Cycle which can cause memmory leak
     private weak var dataSource : MarketListDataSource?
     private weak var delegate   : MarketTableViewDelegate?
+    
+    private weak var colletionDataSource : MarketFilterDataSource?
+    private weak var collectionDelegate  : MarketFilterDelegate?
     
     
     //MARK: Computation Variables
@@ -43,20 +47,17 @@ class ViewControllerPresener {
     
     public var tickerModelList : [TickerModel]? {
         didSet{
-            print("Ticket Value Set")
-            print(tickerModelList?.count ?? 0)
-            
-            let grouping = Dictionary(grouping: marketListModel!) { (ticker) -> String in
-                return (ticker.baseCurrencyShortName ?? "")
-            }
-            print("=== Grouping === ")
-            print(grouping.count)
-            for key in grouping.keys{
-                print(key)
-            }
             
             //Passing the data from the presenter to the viewController
             viewControllerDelegate?.reloadTableView()
+            viewControllerDelegate?.reloadCollectionView()
+        }
+    }
+    
+    var filterList : [FilterModel]? {
+        
+        get{
+            return fetchFilterList()
         }
     }
     
@@ -64,12 +65,16 @@ class ViewControllerPresener {
     init(marketService : GetMarketDetailServiceProtocol = GetMarketDetailsAPI.shared,
          tickerService : GetTickerServiceProtocol = GetTickerAPI.shared,
          marketDataSource : MarketListDataSource,
-         marketDelegate : MarketTableViewDelegate)
+         marketDelegate : MarketTableViewDelegate,
+         marketFilterDataSource : MarketFilterDataSource,
+         marketFilterDelegate : MarketFilterDelegate)
     {
         self.marketDetailService = marketService
         self.tickerDetailService = tickerService
         self.dataSource = marketDataSource
         self.delegate = marketDelegate
+        self.colletionDataSource = marketFilterDataSource
+        self.collectionDelegate = marketFilterDelegate
         
         //Passing the reference of the presenter to the dataSource class
         passDataToDataSource()
@@ -79,7 +84,7 @@ class ViewControllerPresener {
     
     //Fetch the coin information from the market detail object
     public func getCoinMarketInfo(at index : Int) -> (baseCurrencyShort : String, targetCurrencyShort : String, name : String, dcxName : String, imageUrl : String){
-
+        
         return (marketListModel?[index].baseCurrencyShortName ?? "",
                 marketListModel?[index].targetCurrencyShortName ?? "",
                 (marketListModel?[index].targetCurrencyName ?? ""),
@@ -114,9 +119,30 @@ class ViewControllerPresener {
         }
     }
     
+    //Fetch the filter list
+    private func fetchFilterList() -> [FilterModel]{
+        
+        var list = [FilterModel]()
+        
+        //Grouping the common base currency short name
+        let grouping = Dictionary(grouping: marketListModel ?? []) { (ticker) -> String in
+            return (ticker.baseCurrencyShortName ?? "")
+        }
+        
+        //Looping throught the each element and adding it in string array
+        for key in grouping.keys{
+            
+            list.append(FilterModel(filterName: key, isFilterSelected: false))
+        }
+        
+        list.insert(FilterModel(filterName: "ALL", isFilterSelected: true), at: 0)
+        return list
+    }
+    
     //MARK:- Common Functions
     private func passDataToDataSource(){
         dataSource?.viewControllerPresenter = self
+        colletionDataSource?.viewControllerPresenter = self
     }
     
     

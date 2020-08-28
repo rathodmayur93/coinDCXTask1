@@ -13,7 +13,7 @@ class MarketListData : NSObject{
 }
 
 // TableView DataSource Methods
-class MarketListDataSource : MarketListData, UITableViewDataSource, UITableViewDataSourcePrefetching {
+class MarketListDataSource : MarketListData, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

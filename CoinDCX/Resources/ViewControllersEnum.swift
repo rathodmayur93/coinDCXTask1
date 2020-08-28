@@ -27,6 +27,7 @@ enum StoryboardAnXIBEnum{
     
     case main
     case marketDetailXIB
+    case marketFilterXIB
     
     public func storyboardName() -> String{
         switch self {
@@ -34,6 +35,8 @@ enum StoryboardAnXIBEnum{
             return "Main"
         case .marketDetailXIB:
             return "MarketTableViewCell"
+        case .marketFilterXIB:
+            return "FilterCollectionViewCell"
         }
     }
 }
