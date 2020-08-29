@@ -291,9 +291,17 @@
 			children = (
 				77B45ECD24F7D97B00F92CB1 /* TableViewMethods */,
 				773BE72324F9490000956E51 /* CollectionViewMethods */,
+				776AFA6E24FA608200C9AD14 /* SearchBarMethods */,
 				77463A0824F6B8DE009015C6 /* ViewControllerPresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		776AFA6E24FA608200C9AD14 /* SearchBarMethods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SearchBarMethods;
 			sourceTree = "<group>";
 		};
 		778C7BB124F61134008450B7 = {

@@ -97,9 +97,24 @@ enum Status: String, Codable {
 
 extension Array where Element == MarketDetailModel {
     
+    // Filter the array based on the BASE CURRENCY SHORT NAME
     func baseCurrencyFilter(baseCurrencyShortName : String) -> [MarketDetailModel]{
         
         let filterList = self.filter{ $0.baseCurrencyShortName == baseCurrencyShortName }
         return filterList
+    }
+    
+    // Sort the array in ascending order based on the target currency alphabatical order
+    func sortAscending() -> [MarketDetailModel]{
+        return self.sorted { (obj1, obj2) -> Bool in
+            return (obj1.targetCurrencyName?.lowercased() ?? "") < (obj2.targetCurrencyName?.lowercased() ?? "")
+        }
+    }
+    
+    // Sort the array in decending order based on the target currency alphabatical order
+    func sortDecending() -> [MarketDetailModel]{
+        return self.sorted { (obj1, obj2) -> Bool in
+            return (obj1.targetCurrencyName?.lowercased() ?? "") > (obj2.targetCurrencyName?.lowercased() ?? "")
+        }
     }
 }

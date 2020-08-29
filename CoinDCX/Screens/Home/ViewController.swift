@@ -12,10 +12,13 @@ class ViewController: UIViewController {
     
     //MARK:- IBOutlets
     @IBOutlet weak var searchBar: UISearchBar!
+    
     @IBOutlet weak var coinNameLabel: UILabel!
     @IBOutlet weak var twentyFourHourChangeLabel: UILabel!
+    
     @IBOutlet weak var byCoinNameFilter: UIImageView!
     @IBOutlet weak var hourChangeFilter: UIImageView!
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -46,11 +49,6 @@ class ViewController: UIViewController {
         
         //Fetching the market detail from the server
         fetchMarketDetails()
-    
-//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-//        imageView.contentMode = .center
-//        imageView.loadSVG(url: Endpoints.logoUrl.path())
-//        self.navigationItem.titleView = imageView
     }
     
     //MARK:- UI Functions
@@ -66,6 +64,9 @@ class ViewController: UIViewController {
         
         //Setting up the delegate methods
         setupDelegates()
+        
+        //Setting up the tap gesture
+        setupTapGesture()
     }
     
     //Setting up the Tableview
@@ -76,7 +77,7 @@ class ViewController: UIViewController {
         
         tableView.dataSource = dataSource
         tableView.delegate   = delegate
-        tableView.keyboardDismissMode = .interactive
+        tableView.keyboardDismissMode = .onDrag
     }
     
     //Setting up the tableView Cell XIB
@@ -114,6 +115,59 @@ class ViewController: UIViewController {
     private func fetchMarketDetails(){
         viewControllerPresener.getMarketDetailsAPI()
     }
+    
+    //MARK:- Tap Gestures
+    //Setting up the tap gesture
+    private func setupTapGesture(){
+        
+        //Setting up the colum tap gesture
+        setupColumnTapGesture()
+        
+        //Setting up the hour change tap gesture
+        setupChangeTapGesture()
+    }
+    
+    //Setting up the column name tap gesture
+    private func setupColumnTapGesture(){
+        
+        let columnTapGesture = UITapGestureRecognizer(target: self, action: #selector(columnTapAction))
+        columnTapGesture.numberOfTouchesRequired = 1
+        
+        coinNameLabel.isUserInteractionEnabled = true
+        byCoinNameFilter.isUserInteractionEnabled = true
+        
+        coinNameLabel.addGestureRecognizer(columnTapGesture)
+        byCoinNameFilter.addGestureRecognizer(columnTapGesture)
+        
+    }
+    
+    //Setting up the change tap gesture
+    private func setupChangeTapGesture(){
+        
+        let hourChangeTapGesture = UITapGestureRecognizer(target: self, action: #selector(changeTapAction))
+        hourChangeTapGesture.numberOfTouchesRequired = 1
+        
+        twentyFourHourChangeLabel.isUserInteractionEnabled = true
+        hourChangeFilter.isUserInteractionEnabled = true
+        
+        twentyFourHourChangeLabel.addGestureRecognizer(hourChangeTapGesture)
+        hourChangeFilter.addGestureRecognizer(hourChangeTapGesture)
+    }
+    
+    //MARK:- Tap Gesture Action
+    
+    //Column Tap Action Method
+    @objc private func columnTapAction(){
+        viewControllerPresener.isColumnFilterSelected.toggle()
+    }
+    
+    //Change action method
+    @objc private func changeTapAction(){
+        
+    }
+    
+    
+    
 }
 
 //MARK:- Extension Methods
@@ -131,5 +185,9 @@ extension ViewController : ViewControllerDelegate {
     
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    func changeColumnFilterIcon() {
+        byCoinNameFilter.image = viewControllerPresener.isColumnFilterSelected ? UIImage(named: "ascendingArrow") : UIImage(named: "desecendingArrow")
     }
 }

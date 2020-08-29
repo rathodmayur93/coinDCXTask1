@@ -11,6 +11,7 @@ protocol ViewControllerDelegate {
     func reloadTableView()
     func failedToLoadData()
     func reloadCollectionView()
+    func changeColumnFilterIcon()
 }
 
 class ViewControllerPresener {
@@ -33,6 +34,9 @@ class ViewControllerPresener {
     private var originalMarketList : [MarketDetailModel]?
     private var originalTicketList : [TickerModel]?
     
+    //Storing whether which filter user have selected
+    private lazy var isColumFilterSelectedFlag = false
+    private lazy var isChangeFilterSelectedFlag = false
     
     //MARK: Computation Variables
     public var errorResult : ErrorResult? {
@@ -46,8 +50,8 @@ class ViewControllerPresener {
     public var marketListModel : [MarketDetailModel]? {
         
         didSet{
-            print("Market List Value Set")
-            print(marketListModel?.count ?? 0)
+            //Passing the data from the presenter to the viewController
+            viewControllerDelegate?.reloadTableView()
         }
     }
     
@@ -59,13 +63,29 @@ class ViewControllerPresener {
         }
     }
     
-    var filterList : [FilterModel]? {
+    public var filterList : [FilterModel]? {
         
         didSet{
             //Passing the data from the presenter to the viewController
             viewControllerDelegate?.reloadCollectionView()
         }
     }
+    
+    //Flag for sorting the data in ascending and decending order
+    
+    public var isColumnFilterSelected : Bool {
+        
+        willSet{
+            columSortAction(columnFilterFlag: newValue)
+        }
+    }
+    
+    public var isHourChangeFilterSelected : Bool? {
+        didSet{
+            
+        }
+    }
+    
     
     //MARK:- Initializer
     init(marketService : GetMarketDetailServiceProtocol = GetMarketDetailsAPI.shared,
@@ -81,6 +101,9 @@ class ViewControllerPresener {
         self.delegate = marketDelegate
         self.colletionDataSource = marketFilterDataSource
         self.collectionDelegate = marketFilterDelegate
+        
+        //Setting up the filter flag as false
+        isColumnFilterSelected = false
         
         //Passing the reference of the presenter to the dataSource class
         passDataToDataSource()
@@ -182,14 +205,17 @@ class ViewControllerPresener {
         filterMarketData(filterName: list[index].filterName)
     }
     
+    //MARK: Filtering Market Data
+    
+    // Filter out the market data based on the selected BASE CURRENCY SHORT NAME
     private func filterMarketData(filterName baseCurrencyShortName: String){
         
         //Unwrapping & Assigning the original list to new variable so that we can peroforn filter operation on that
         guard let list = originalMarketList else { return }
         
         /*
-          - If the select filter is ALL then we have to load all the data we fetched from the server wiithout applying any filter
-          - Else will filter the data based on the BASE CURRENCY SHORT NAME
+         - If the select filter is ALL then we have to load all the data we fetched from the server wiithout applying any filter
+         - Else will filter the data based on the BASE CURRENCY SHORT NAME
          */
         if(baseCurrencyShortName == "ALL"){
             marketListModel = originalMarketList
@@ -197,8 +223,40 @@ class ViewControllerPresener {
             marketListModel = list.baseCurrencyFilter(baseCurrencyShortName: baseCurrencyShortName)
         }
         
-        //Reload the data in tableView
-        viewControllerDelegate?.reloadTableView()
+        //If the user have selectd any filter then we will maintain that filter while applying above filter
+        if(isColumFilterSelectedFlag){
+            columSortAction(columnFilterFlag: isColumnFilterSelected)
+        }
+    }
+    
+    private func columSortAction(columnFilterFlag flag : Bool){
+        
+        //Sort the data depending on the column filter flag
+        if(flag){
+            sortByTargetCurrencyInDecendingOrder()
+        }else{
+            sortByTargetCurrencyInAscendingOrder()
+        }
+        
+        //Make Column filter selected
+        isColumFilterSelectedFlag = true
+        
+        // Notify the viewController to change the column filter icon
+        viewControllerDelegate?.changeColumnFilterIcon()
+    }
+    
+    // Sort the data in Ascending Order based on the Target Currency Name
+    private func sortByTargetCurrencyInAscendingOrder(){
+        if let list = marketListModel {
+            marketListModel = list.sortAscending()
+        }
+    }
+    
+    // Sort the data in Decending Order based on the Target Currency Name
+    private func sortByTargetCurrencyInDecendingOrder(){
+        if let list = marketListModel{
+            marketListModel = list.sortDecending()
+        }
     }
     
     

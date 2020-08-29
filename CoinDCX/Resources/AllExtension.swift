@@ -30,7 +30,7 @@ extension NSMutableAttributedString {
 
         let attributes:[NSAttributedString.Key : Any] = [
             .font : boldFont,
-            .foregroundColor : UIColor.darkGray
+            .foregroundColor : UIColor(named: Colors.textColor.colorName()) ?? UIColor.gray
         ]
 
         self.append(NSAttributedString(string: value, attributes:attributes))
