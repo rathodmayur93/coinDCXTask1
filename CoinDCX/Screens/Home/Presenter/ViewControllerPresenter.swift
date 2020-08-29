@@ -30,6 +30,8 @@ class ViewControllerPresener {
     private weak var colletionDataSource : MarketFilterDataSource?
     private weak var collectionDelegate  : MarketFilterDelegate?
     
+    private weak var searchDelegate : SearchMarketDataDelegate?
+    
     //Storing the original result of market detail list and ticker list
     private var originalMarketList : [MarketDetailModel]?
     private var originalTicketList : [TickerModel]?
@@ -93,7 +95,8 @@ class ViewControllerPresener {
          marketDataSource : MarketListDataSource,
          marketDelegate : MarketTableViewDelegate,
          marketFilterDataSource : MarketFilterDataSource,
-         marketFilterDelegate : MarketFilterDelegate)
+         marketFilterDelegate : MarketFilterDelegate,
+         searchDataDelegate : SearchMarketDataDelegate)
     {
         self.marketDetailService = marketService
         self.tickerDetailService = tickerService
@@ -101,6 +104,7 @@ class ViewControllerPresener {
         self.delegate = marketDelegate
         self.colletionDataSource = marketFilterDataSource
         self.collectionDelegate = marketFilterDelegate
+        self.searchDelegate = searchDataDelegate
         
         //Setting up the filter flag as false
         isColumnFilterSelected = false
@@ -136,9 +140,9 @@ class ViewControllerPresener {
     public func fetchAlphaValue(percentage value : Float) -> Float{
         switch value {
         case 0..<5:
-            return 0.5
+            return 0.4
         case 5..<10:
-            return 0.55
+            return 0.5
         case 10..<15:
             return 0.6
         case 15..<20:
@@ -181,6 +185,7 @@ class ViewControllerPresener {
         dataSource?.viewControllerPresenter = self
         colletionDataSource?.viewControllerPresenter = self
         collectionDelegate?.viewControllerPresenter = self
+        searchDelegate?.viewControllerPresenter = self
     }
     
     //Change the selected filter
@@ -229,6 +234,9 @@ class ViewControllerPresener {
         }
     }
     
+    //MARK: Column Filter Methods
+    
+    //Sort the market data based on the columFilterFlag
     private func columSortAction(columnFilterFlag flag : Bool){
         
         //Sort the data depending on the column filter flag
@@ -259,6 +267,40 @@ class ViewControllerPresener {
         }
     }
     
+    //MARK: Change Percentage Filter
+    
+    //Sort the market data based on the 24 hour change rate
+    private func percentageChangeSortAction(columnFilterFlag flag : Bool){
+        
+        //Sort the data depending on the column filter flag
+        if(flag){
+            sortByTargetCurrencyInDecendingOrder()
+        }else{
+            sortByTargetCurrencyInAscendingOrder()
+        }
+        
+        //Make Column filter selected
+        isColumFilterSelectedFlag = true
+        
+        // Notify the viewController to change the column filter icon
+        viewControllerDelegate?.changeColumnFilterIcon()
+    }
+    
+    //MARK: Search Text Data Filter
+    //Filter the data based on the Searched Text
+    public func filterSearchedData(searchedText text : String){
+        
+        //If the search text is blank mean we have to load the original result again since user is not searching anything anymore
+        if(text == ""){
+            marketListModel = originalMarketList
+            return
+        }
+        
+        //Filter the list based on target currency name
+        if let list = originalMarketList{
+            marketListModel = list.searchedhData(searchText: text)
+        }
+    }
     
     //MARK:- API Calls
     

@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     private let delegate = MarketTableViewDelegate()
     private let filterDataSource = MarketFilterDataSource()
     private let filterDelegate = MarketFilterDelegate()
+    private let searchDelegate = SearchMarketDataDelegate()
     
     /*
      - Setting up the viewController Presenter
@@ -37,7 +38,8 @@ class ViewController: UIViewController {
         let presenter = ViewControllerPresener(marketDataSource: dataSource,
                                                marketDelegate: delegate,
                                                marketFilterDataSource: filterDataSource,
-                                               marketFilterDelegate: filterDelegate)
+                                               marketFilterDelegate: filterDelegate,
+                                               searchDataDelegate: searchDelegate)
         return presenter
     }()
     
@@ -109,6 +111,7 @@ class ViewController: UIViewController {
     //Setting up the delegate method
     private func setupDelegates(){
         viewControllerPresener.viewControllerDelegate = self
+        searchBar.delegate = searchDelegate
     }
     
     //Fetching the Market List from coinDCX api
@@ -165,9 +168,6 @@ class ViewController: UIViewController {
     @objc private func changeTapAction(){
         
     }
-    
-    
-    
 }
 
 //MARK:- Extension Methods
@@ -177,6 +177,12 @@ extension ViewController : ViewControllerDelegate {
     
     func reloadTableView() {
         tableView.reloadData()
+        
+        //While filtering the data if the marketListModel count becomes zero then it cant scroll up and it will result into the crash to avoid that we are putting this check
+        if(viewControllerPresener.marketListModel?.count != 0){
+            //Whenever tableView reload again will scroll the tableView to the top for better UX
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
     
     func failedToLoadData() {

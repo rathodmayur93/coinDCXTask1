@@ -117,4 +117,11 @@ extension Array where Element == MarketDetailModel {
             return (obj1.targetCurrencyName?.lowercased() ?? "") > (obj2.targetCurrencyName?.lowercased() ?? "")
         }
     }
+    
+    //Filter the array based on the searched text
+    func searchedhData(searchText text : String) -> [MarketDetailModel] {
+        return self.filter { (marketData) -> Bool in
+            return (marketData.targetCurrencyName?.contains(text) ?? false)
+        }
+    }
 }

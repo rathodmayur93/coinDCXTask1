@@ -53,7 +53,7 @@
             </objects>
             <point key="canvasLocation" x="51" y="94"/>
         </scene>
-        <!--Market-->
+        <!--coinDCX Market-->
         <scene sceneID="UbN-h3-WXl">
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="8b6-8q-pCr" customClass="ViewController" customModule="CoinDCX" customModuleProvider="target" sceneMemberID="viewController">
@@ -176,7 +176,7 @@
                             <constraint firstItem="8QA-zD-KbF" firstAttribute="top" secondItem="hY0-4I-0gW" secondAttribute="bottom" id="ykr-Rm-5AY"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Market" id="cHP-Py-5dI"/>
+                    <navigationItem key="navigationItem" title="coinDCX Market" id="cHP-Py-5dI"/>
                     <connections>
                         <outlet property="byCoinNameFilter" destination="V8k-GE-Azv" id="897-VR-6vt"/>
                         <outlet property="coinNameLabel" destination="eDh-Y2-btG" id="8IR-Bl-8eL"/>
