@@ -32,6 +32,7 @@ class ViewControllerPresener {
     
     //MARK: Computation Variables
     public var errorResult : ErrorResult? {
+        
         didSet{
             print("Setting Error Result Successfully")
             print(errorResult!)
@@ -39,6 +40,7 @@ class ViewControllerPresener {
     }
     
     public var marketListModel : [MarketDetailModel]? {
+        
         didSet{
             print("Market List Value Set")
             print(marketListModel?.count ?? 0)
@@ -46,18 +48,18 @@ class ViewControllerPresener {
     }
     
     public var tickerModelList : [TickerModel]? {
+        
         didSet{
-            
             //Passing the data from the presenter to the viewController
             viewControllerDelegate?.reloadTableView()
-            viewControllerDelegate?.reloadCollectionView()
         }
     }
     
     var filterList : [FilterModel]? {
         
-        get{
-            return fetchFilterList()
+        didSet{
+            //Passing the data from the presenter to the viewController
+            viewControllerDelegate?.reloadCollectionView()
         }
     }
     
@@ -106,12 +108,18 @@ class ViewControllerPresener {
     //Fetch the alpha value of the percetage overlay view
     public func fetchAlphaValue(percentage value : Float) -> Float{
         switch value {
-        case 0..<10:
+        case 0..<5:
             return 0.5
-        case 10..<20:
+        case 5..<10:
+            return 0.55
+        case 10..<15:
             return 0.6
-        case 20..<30:
+        case 15..<20:
+            return 0.65
+        case 20..<25:
             return 0.7
+        case 25..<30:
+            return 0.75
         case 30..<40:
             return 0.8
         default:
@@ -120,7 +128,7 @@ class ViewControllerPresener {
     }
     
     //Fetch the filter list
-    private func fetchFilterList() -> [FilterModel]{
+    private func fetchFilterList() {
         
         var list = [FilterModel]()
         
@@ -136,13 +144,32 @@ class ViewControllerPresener {
         }
         
         list.insert(FilterModel(filterName: "ALL", isFilterSelected: true), at: 0)
-        return list
+        
+        //Setting value to the filterList
+        filterList = list
     }
     
     //MARK:- Common Functions
     private func passDataToDataSource(){
         dataSource?.viewControllerPresenter = self
         colletionDataSource?.viewControllerPresenter = self
+        collectionDelegate?.viewControllerPresenter = self
+    }
+    
+    //Change the selected filter
+    public func changeFilter(selectedAt index : Int){
+        
+        guard var list = filterList else { return }
+        
+        for i in 0..<list.count{
+            if(i == index){
+                list[i].isFilterSelected = true
+            }else{
+                list[i].isFilterSelected = false
+            }
+        }
+        
+        filterList = list
     }
     
     
@@ -212,6 +239,8 @@ class ViewControllerPresener {
                 switch result{
                 case .success(let tickerModel):
                     self.tickerModelList = tickerModel
+                    //Fetchinig the filter list based on the base currency pair
+                    self.fetchFilterList()
                 case .failure(let error):
                     self.errorResult = error
                 }

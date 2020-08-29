@@ -21,29 +21,43 @@ class FilterCollectionViewCell: UICollectionViewCell {
     
     //Setting up the UI element
     private func setUI(){
-        selectedFilterView.layer.cornerRadius = 5;
-        
         self.contentView.layer.cornerRadius = 10.0
     }
     
     //Setting up the cell
     public func setupCell(at index : Int, presenter : ViewControllerPresener){
         
-        //Fetching the filter list
-        let list = presenter.filterList
+        //Setting the filter label text as blank
+        filterLabel.text = ""
         
         //Setting up the selected filter views
         selectedFilterView.isHidden = true
-        selectedFilterView.backgroundColor = UIColor(named: Colors.brand.colorName())
         
-        if(list?[index].isFilterSelected ?? false){
+        changeFilter(at: index, presenter: presenter)
+    }
+    
+    //Setting up the logic to make selected filter background different from other filters
+    public func changeFilter(at index : Int, presenter : ViewControllerPresener){
+        
+        //Fetching the filter list
+        guard let list = presenter.filterList else { return }
+        
+        /*
+            - If condition will check whether fitlter is selected or not
+            - If filter is selected then will set background colors as selected
+            - Else will remove the background color of the filter
+        */
+        
+        if(list[index].isFilterSelected){
+            // Chnage background color of the cell as seleted
             setupFilterBackground()
         }else{
+            // Change the background color of the cell as unselected
             removeFilterBackground()
         }
         
         //Setting up the filter name
-        filterLabel.text = list?[index].filterName ?? ""
+        filterLabel.text = list[index].filterName
     }
     
     //Setting up the selected filter background
