@@ -29,6 +29,10 @@ class ViewControllerPresener {
     private weak var colletionDataSource : MarketFilterDataSource?
     private weak var collectionDelegate  : MarketFilterDelegate?
     
+    //Storing the original result of market detail list and ticker list
+    private var originalMarketList : [MarketDetailModel]?
+    private var originalTicketList : [TickerModel]?
+    
     
     //MARK: Computation Variables
     public var errorResult : ErrorResult? {
@@ -159,8 +163,10 @@ class ViewControllerPresener {
     //Change the selected filter
     public func changeFilter(selectedAt index : Int){
         
+        // Unwrapping the fitler list. If filter list is nil  then will return and stop the execution of the code
         guard var list = filterList else { return }
         
+        // Will loop through all the filter and will make selected filer flag true
         for i in 0..<list.count{
             if(i == index){
                 list[i].isFilterSelected = true
@@ -169,7 +175,30 @@ class ViewControllerPresener {
             }
         }
         
+        //Will assign the new list with user selected filter to filter list so that it can refresh the collectionView
         filterList = list
+        
+        //Whenever filter gets change we have to load filtered market data
+        filterMarketData(filterName: list[index].filterName)
+    }
+    
+    private func filterMarketData(filterName baseCurrencyShortName: String){
+        
+        //Unwrapping & Assigning the original list to new variable so that we can peroforn filter operation on that
+        guard let list = originalMarketList else { return }
+        
+        /*
+          - If the select filter is ALL then we have to load all the data we fetched from the server wiithout applying any filter
+          - Else will filter the data based on the BASE CURRENCY SHORT NAME
+         */
+        if(baseCurrencyShortName == "ALL"){
+            marketListModel = originalMarketList
+        }else{
+            marketListModel = list.baseCurrencyFilter(baseCurrencyShortName: baseCurrencyShortName)
+        }
+        
+        //Reload the data in tableView
+        viewControllerDelegate?.reloadTableView()
     }
     
     
@@ -200,7 +229,7 @@ class ViewControllerPresener {
                 switch result{
                 case .success(let marketDetailModel):
                     self.marketListModel = marketDetailModel
-                    
+                    self.originalMarketList = marketDetailModel
                     //Fetching the ticket information from the coinDCX
                     self.getTickerDetailAPI()
                 case .failure(let error):
@@ -239,6 +268,7 @@ class ViewControllerPresener {
                 switch result{
                 case .success(let tickerModel):
                     self.tickerModelList = tickerModel
+                    self.originalTicketList = tickerModel
                     //Fetchinig the filter list based on the base currency pair
                     self.fetchFilterList()
                 case .failure(let error):

@@ -97,8 +97,8 @@ class MarketTableViewCell: UITableViewCell {
         
         //Setting up the UIs visible element
         coinPairLabel.attributedText = NSMutableAttributedString()
-            .bold(short)
-            .normal("/"+target)
+            .bold(target)
+            .normal("/"+short)
         coinNameLabel.text = name
         //        coinValueLabel.attributedText = NSMutableAttributedString()
         //                                         .bold("Last Price: ")

@@ -93,3 +93,13 @@ enum OrderType: String, Codable {
 enum Status: String, Codable {
     case active = "active"
 }
+
+
+extension Array where Element == MarketDetailModel {
+    
+    func baseCurrencyFilter(baseCurrencyShortName : String) -> [MarketDetailModel]{
+        
+        let filterList = self.filter{ $0.baseCurrencyShortName == baseCurrencyShortName }
+        return filterList
+    }
+}

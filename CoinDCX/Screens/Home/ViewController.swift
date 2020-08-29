@@ -76,6 +76,7 @@ class ViewController: UIViewController {
         
         tableView.dataSource = dataSource
         tableView.delegate   = delegate
+        tableView.keyboardDismissMode = .interactive
     }
     
     //Setting up the tableView Cell XIB
