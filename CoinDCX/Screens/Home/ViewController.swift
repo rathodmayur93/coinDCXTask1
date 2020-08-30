@@ -185,6 +185,10 @@ extension ViewController : ViewControllerDelegate {
         }
     }
     
+    func selectTableViewRow(at : Int) {
+        Router.showCoinBottomSheet(from: self, presenter: viewControllerPresener, at: at)
+    }
+    
     func failedToLoadData() {
         print("We're facing some technical issue")
     }

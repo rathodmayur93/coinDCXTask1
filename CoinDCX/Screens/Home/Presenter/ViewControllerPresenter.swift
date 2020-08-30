@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit.UIViewController
 
 protocol ViewControllerDelegate {
     func reloadTableView()
     func failedToLoadData()
+    func selectTableViewRow(at index : Int)
     func reloadCollectionView()
     func changeColumnFilterIcon()
 }
@@ -135,26 +137,35 @@ class ViewControllerPresener {
         return (tickerModel?.lastPrice ?? "", tickerModel?.change24_Hour ?? "")
     }
     
+    //Fetch the High & Low price from the ticker object
+    public func getHighAndLowPrice(coinDCXName name : String) -> (high : String, low : String){
+        
+        let tickerModel = tickerModelList?.first(where: { (tickerModel) -> Bool in
+            return tickerModel.market == name
+        })
+        
+        return (tickerModel?.high ?? "", tickerModel?.low ?? "")
+    }
     
     //Fetch the alpha value of the percetage overlay view
     public func fetchAlphaValue(percentage value : Float) -> Float{
         switch value {
         case 0..<5:
-            return 0.4
-        case 5..<10:
             return 0.5
-        case 10..<15:
+        case 5..<10:
             return 0.6
-        case 15..<20:
-            return 0.65
-        case 20..<25:
+        case 10..<15:
             return 0.7
-        case 25..<30:
+        case 15..<20:
             return 0.75
-        case 30..<40:
+        case 20..<25:
             return 0.8
-        default:
+        case 25..<30:
+            return 0.85
+        case 30..<40:
             return 0.9
+        default:
+            return 1.0
         }
     }
     
@@ -182,9 +193,16 @@ class ViewControllerPresener {
     
     //MARK:- Common Functions
     private func passDataToDataSource(){
+        
+        //Passing reference to tableView
         dataSource?.viewControllerPresenter = self
+        delegate?.viewControllerPresenter = self
+        
+        //Passsing reference to collectionView
         colletionDataSource?.viewControllerPresenter = self
         collectionDelegate?.viewControllerPresenter = self
+        
+        //Passing reference to search bar
         searchDelegate?.viewControllerPresenter = self
     }
     
@@ -300,6 +318,13 @@ class ViewControllerPresener {
         if let list = originalMarketList{
             marketListModel = list.searchedhData(searchText: text)
         }
+    }
+    
+    //MARK:- TableView Row Selection Method
+    
+    //When user click on the tableView row this method will get invoked
+    public func didSelectTableViewRow(at index : Int){
+        viewControllerDelegate?.selectTableViewRow(at: index)
     }
     
     //MARK:- API Calls

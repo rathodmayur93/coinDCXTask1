@@ -37,6 +37,8 @@
 		7758C66924F6F01300DA7F68 /* GET+TickerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758C66824F6F01300DA7F68 /* GET+TickerAPI.swift */; };
 		7758C66B24F6F0E600DA7F68 /* TickerDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758C66A24F6F0E600DA7F68 /* TickerDetailModel.swift */; };
 		776AFA7024FA95D600C9AD14 /* SearchMarketDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776AFA6F24FA95D600C9AD14 /* SearchMarketDataDelegate.swift */; };
+		776AFA7224FAA86B00C9AD14 /* Dialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 776AFA7124FAA86B00C9AD14 /* Dialog.storyboard */; };
+		776AFA7524FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776AFA7424FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift */; };
 		7777DB0B24F613EA00F444B5 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7777DB0A24F613EA00F444B5 /* SplashViewController.swift */; };
 		7777DB0F24F6167100F444B5 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7777DB0E24F6167100F444B5 /* Endpoints.swift */; };
 		778C7BBE24F61134008450B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778C7BBD24F61134008450B7 /* AppDelegate.swift */; };
@@ -106,6 +108,8 @@
 		7758C66824F6F01300DA7F68 /* GET+TickerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GET+TickerAPI.swift"; sourceTree = "<group>"; };
 		7758C66A24F6F0E600DA7F68 /* TickerDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerDetailModel.swift; sourceTree = "<group>"; };
 		776AFA6F24FA95D600C9AD14 /* SearchMarketDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMarketDataDelegate.swift; sourceTree = "<group>"; };
+		776AFA7124FAA86B00C9AD14 /* Dialog.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dialog.storyboard; sourceTree = "<group>"; };
+		776AFA7424FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDetailBottomSheetViewController.swift; sourceTree = "<group>"; };
 		7777DB0A24F613EA00F444B5 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		7777DB0C24F615FE00F444B5 /* SwiftSVG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftSVG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7777DB0E24F6167100F444B5 /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
@@ -307,6 +311,14 @@
 			path = SearchBarMethods;
 			sourceTree = "<group>";
 		};
+		776AFA7324FADB1B00C9AD14 /* MarketDetailBottomSheet */ = {
+			isa = PBXGroup;
+			children = (
+				776AFA7424FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift */,
+			);
+			path = MarketDetailBottomSheet;
+			sourceTree = "<group>";
+		};
 		778C7BB124F61134008450B7 = {
 			isa = PBXGroup;
 			children = (
@@ -380,8 +392,10 @@
 			isa = PBXGroup;
 			children = (
 				778C7BC324F61134008450B7 /* Main.storyboard */,
+				776AFA7124FAA86B00C9AD14 /* Dialog.storyboard */,
 				774639EE24F69FB0009015C6 /* Splash */,
 				774639EF24F69FC4009015C6 /* Home */,
+				776AFA7324FADB1B00C9AD14 /* MarketDetailBottomSheet */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -527,6 +541,7 @@
 				773BE72024F9455100956E51 /* FilterCollectionViewCell.xib in Resources */,
 				778C7BC724F61137008450B7 /* Assets.xcassets in Resources */,
 				778C7BC524F61134008450B7 /* Main.storyboard in Resources */,
+				776AFA7224FAA86B00C9AD14 /* Dialog.storyboard in Resources */,
 				773087E524F76BC2006C8E7F /* MarketTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,6 +663,7 @@
 				774639F824F6A0A5009015C6 /* RequestMethod.swift in Sources */,
 				77B45ED124F7E4AD00F92CB1 /* MarketTableViewDelegate.swift in Sources */,
 				774639FF24F6A0DA009015C6 /* ErrorResult.swift in Sources */,
+				776AFA7524FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift in Sources */,
 				77AD2B9224F69BA1007998B5 /* ViewControllersEnum.swift in Sources */,
 				773BE72224F947BA00956E51 /* Colors.swift in Sources */,
 				7777DB0B24F613EA00F444B5 /* SplashViewController.swift in Sources */,

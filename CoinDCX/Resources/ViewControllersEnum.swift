@@ -10,6 +10,7 @@ enum ViewControllersEnum{
     
     case splash
     case home
+    case marketDetail
     
     public func viewControllerName() -> String{
         
@@ -18,6 +19,8 @@ enum ViewControllersEnum{
             return "SplashViewController"
         case .home:
             return "ViewControllerNVC"
+        case .marketDetail:
+            return "MarketDetailBottomSheetViewController"
         }
     }
 }
@@ -26,6 +29,7 @@ enum ViewControllersEnum{
 enum StoryboardAnXIBEnum{
     
     case main
+    case dialog
     case marketDetailXIB
     case marketFilterXIB
     
@@ -33,6 +37,8 @@ enum StoryboardAnXIBEnum{
         switch self {
         case .main:
             return "Main"
+        case .dialog:
+            return "Dialog"
         case .marketDetailXIB:
             return "MarketTableViewCell"
         case .marketFilterXIB:
