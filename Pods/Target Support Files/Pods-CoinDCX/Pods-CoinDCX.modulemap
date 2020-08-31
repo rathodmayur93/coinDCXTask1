@@ -1,0 +1,6 @@
+framework module Pods_CoinDCX {
+  umbrella header "Pods-CoinDCX-umbrella.h"
+
+  export *
+  module * { export * }
+}
