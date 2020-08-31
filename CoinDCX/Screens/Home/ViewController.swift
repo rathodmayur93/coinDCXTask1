@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SVGKit
 
 class ViewController: UIViewController {
     
@@ -43,6 +42,8 @@ class ViewController: UIViewController {
         return presenter
     }()
     
+    
+    //MARK:- Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +52,12 @@ class ViewController: UIViewController {
         
         //Fetching the market detail from the server
         fetchMarketDetails()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //Setup Netwok Listener
+        NetworkManager.shared.networkDelegate = self
+        NetworkManager.shared.checkConnection()
     }
     
     //MARK:- UI Functions
@@ -117,6 +124,25 @@ class ViewController: UIViewController {
     //Fetching the Market List from coinDCX api
     private func fetchMarketDetails(){
         viewControllerPresener.getMarketDetailsAPI()
+    }
+    
+    private func showNoInternetAlertBox(message: String){
+        // Create the alert controller
+        let alertController = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
+        
+        // Create the actions
+        let okAction = UIAlertAction(title: "Retry Now", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            
+            //Check internet connection now
+            NetworkManager.shared.checkConnection()
+        }
+        
+        // Add the actions
+        alertController.addAction(okAction)
+        
+        // Present the controller
+        self.present(alertController, animated: true, completion: nil)
     }
     
     //MARK:- Tap Gestures
@@ -189,10 +215,6 @@ extension ViewController : ViewControllerDelegate {
         Router.showCoinBottomSheet(from: self, presenter: viewControllerPresener, at: at)
     }
     
-    func failedToLoadData() {
-        print("We're facing some technical issue")
-    }
-    
     func reloadCollectionView() {
         collectionView.reloadData()
     }
@@ -205,5 +227,21 @@ extension ViewController : ViewControllerDelegate {
     func changePercentageFilterIcon() {
         hourChangeFilter.image = viewControllerPresener.isHourChangeFilterSelected ? UIImage(named: "ascendingArrow") : UIImage(named: "desecendingArrow")
         byCoinNameFilter.image = UIImage(named: "unselectedArrow")
+    }
+    
+    func handleError(error: ErrorResult) {
+        let message = Utility.retrieveErrorMessage(errorResult: error)
+        Utility.showAlert(title: "Oops!", message: message, logMessage: message, fromController: self)
+    }
+}
+
+//MARK:- Extension For Protocol NetworkConnectionStatus
+extension ViewController : NetworkConnectionStatus{
+    func netwokResult(result: NetworkStatus) {
+        DispatchQueue.main.async {
+            if(result != .connected){
+                self.showNoInternetAlertBox(message: result.getStatusMessage())
+            }
+        }
     }
 }

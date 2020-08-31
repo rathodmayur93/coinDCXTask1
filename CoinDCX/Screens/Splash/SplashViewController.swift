@@ -41,7 +41,11 @@ class SplashViewController: UIViewController {
     private func setupLogo(){
         
         //Loading the Logo of the coinDCX
-        logoImageView.loadSVG(url: Endpoints.logoUrl.path())
+        if(traitCollection.userInterfaceStyle == .dark){
+            logoImageView.loadSVG(url: Endpoints.logoWhiteUrl.path())
+        }else{
+            logoImageView.loadSVG(url: Endpoints.logoUrl.path())
+        }
     }
     
     
@@ -58,11 +62,11 @@ class SplashViewController: UIViewController {
     @objc func goToScreen(){
         //Increamenting the timer by 1
         time += 1
-
+        
         /**
          - If condition will check whether time variable value is 1 or not i.e the time variable contain the second value
          - If the if condition is true then will navigate user to home screen
-        **/
+         **/
         if time == Constants.SPLASH_TIMER{
             Router.navigateScreen(from: self, to: ViewControllersEnum.home.viewControllerName())
         }

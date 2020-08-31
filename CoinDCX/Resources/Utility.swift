@@ -48,6 +48,17 @@ struct Utility {
         }
     }
     
+    //MARK:- Show alert dialog with title & message
+    static func showAlert(title: String, message: String, logMessage: String, fromController controller: UIViewController){
+        let alertController = UIAlertController(title: title,
+                                                message:message,
+                                                preferredStyle: UIAlertController.Style.alert)
+        
+        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default,handler: nil))
+        
+        controller.present(alertController, animated: true, completion: nil)
+    }
+    
     //MARK:- Fetching the errorMessage from teh ErrorResult Enum property
     static func retrieveErrorMessage(errorResult : ErrorResult) -> String{
         

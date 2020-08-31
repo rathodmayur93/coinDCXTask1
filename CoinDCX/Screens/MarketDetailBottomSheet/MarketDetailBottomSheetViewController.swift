@@ -39,64 +39,58 @@ class MarketDetailBottomSheetViewController: UIViewController {
         
         //Unwrapping the presenter and index values
         guard let vcPresenter = presenter, let atIndex = index else { return }
+        let (logo, targetCurrency, targetCurrecyShort, lastPrice, change, high, low, alpha) = vcPresenter.fetchBottomSheetInfo(at: atIndex)
         
         //Setting up teh header information
-        setupHeaderInfo(presenter: vcPresenter, at: atIndex)
+        setupHeaderInfo(logo: logo, targetCurrency: targetCurrency, targetCurrencyShort: targetCurrecyShort)
         
         //Setting up the price information
-        setupPricesInfo(presenter: vcPresenter, at: atIndex)
+        setupPricesInfo(lastPrice: lastPrice, percentage: change, high: high, low: low, alphaValue: alpha)
     }
     
     //MARK: Header Information
     //Setting up the header section information
-    private func setupHeaderInfo(presenter vcPresenter : ViewControllerPresener, at atIndex : Int){
+    private func setupHeaderInfo(logo : String, targetCurrency : String, targetCurrencyShort : String){
         
         //Loading the currency logo
-        currencyLogo.loadSVG(url: Endpoints.imageUrl(coinName: vcPresenter.marketListModel?[atIndex].targetCurrencyShortName ?? "").path())
+        currencyLogo.loadSVG(url: logo)
         
         //Setting the currency name
         currencyName.attributedText  = NSMutableAttributedString()
-            .bold(vcPresenter.marketListModel?[atIndex].targetCurrencyName ?? "")
-            .normal(" (" + (vcPresenter.marketListModel?[atIndex].targetCurrencyShortName ?? "") + ")")
+            .bold(targetCurrency)
+            .normal(" (" + (targetCurrencyShort) + ")")
     }
     
     //MARK: Prices Information
     //Setting up the last trade, 24 hour high & 24 hour low price
-    private func setupPricesInfo(presenter vcPresenter : ViewControllerPresener, at atIndex : Int){
+    private func setupPricesInfo(lastPrice : String, percentage : String, high : String, low : String, alphaValue : CGFloat){
         
-        //Setting the last trade price of the coin
-        let (lastPrice, percentage) = vcPresenter.getLastPriceAndPercentage(coinDCXName: vcPresenter.marketListModel?[atIndex].coindcxName ?? "", at: atIndex)
         
         //Setting up the last traded price
-        lastTradedPriceLabel.text = lastPrice + " " + (vcPresenter.marketListModel?[atIndex].baseCurrencyShortName ?? "")
+        lastTradedPriceLabel.text = "₹ " + lastPrice
         
         // Fetching & Setting the 24 hour high and low trade perice
-        let (high, low) = vcPresenter.getHighAndLowPrice(coinDCXName: vcPresenter.marketListModel?[atIndex].coindcxName ?? "")
         lowLabel.text   = "₹ " + low
         highLabel.text  = "₹ " + high
         
         //Setting up the percentage info
-        setupPercentageInfo(presenter: vcPresenter, percentageValue: percentage)
+        setupPercentageInfo(percentageValue: percentage, alphaValue: alphaValue)
     }
     
     //MARK: Percentage Setup
     //Setup percentage info
-    private func setupPercentageInfo(presenter vcPresenter : ViewControllerPresener, percentageValue percentage : String){
-        
+    private func setupPercentageInfo(percentageValue percentage : String, alphaValue : CGFloat){
         //Percentage gain or loss
         let percentageFloat = (percentage as NSString).floatValue
         let uptoTwoDecimalPercentage = String(format: "%.2f", percentageFloat)
         percentageLabel.text = uptoTwoDecimalPercentage + "%"
         
-        //Fetching the alpha percentage value
-        var percetageOverlayAlpha = vcPresenter.fetchAlphaValue(percentage: abs(percentageFloat))
-        
         //Setting up the percentageView
-        setupPercentageView(percentage: percentageFloat, alphaValue: &percetageOverlayAlpha)
+        setupPercentageView(percentage: percentageFloat, alphaValue: CGFloat(abs(alphaValue)))
     }
     
     //Setting up the percentage view
-    private func setupPercentageView(percentage value : Float, alphaValue : inout Float){
+    private func setupPercentageView(percentage value : Float, alphaValue : CGFloat){
         
         //Setting up the rounded corner rectangle
         percentageView.layer.cornerRadius = 10

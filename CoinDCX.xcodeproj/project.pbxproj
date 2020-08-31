@@ -16,6 +16,10 @@
 		77022E6824F84BC80010872F /* AllExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77022E6724F84BC80010872F /* AllExtension.swift */; };
 		773087E424F76BC2006C8E7F /* MarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773087E224F76BC2006C8E7F /* MarketTableViewCell.swift */; };
 		773087E524F76BC2006C8E7F /* MarketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 773087E324F76BC2006C8E7F /* MarketTableViewCell.xib */; };
+		77381D6F24FD646200612C11 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77381D6E24FD646200612C11 /* NetworkManager.swift */; };
+		77381D7524FD648400612C11 /* NotificationCenterEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77381D7124FD648300612C11 /* NotificationCenterEnum.swift */; };
+		77381D7724FD648400612C11 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77381D7324FD648300612C11 /* Endpoint.swift */; };
+		77381D7824FD648400612C11 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77381D7424FD648400612C11 /* NetworkStatus.swift */; };
 		773BE71F24F9455100956E51 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE71D24F9455100956E51 /* FilterCollectionViewCell.swift */; };
 		773BE72024F9455100956E51 /* FilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 773BE71E24F9455100956E51 /* FilterCollectionViewCell.xib */; };
 		773BE72224F947BA00956E51 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BE72124F947BA00956E51 /* Colors.swift */; };
@@ -87,6 +91,10 @@
 		770BCCBB24F61304003ACF0B /* SwiftSVG.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftSVG.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		773087E224F76BC2006C8E7F /* MarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewCell.swift; sourceTree = "<group>"; };
 		773087E324F76BC2006C8E7F /* MarketTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarketTableViewCell.xib; sourceTree = "<group>"; };
+		77381D6E24FD646200612C11 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		77381D7124FD648300612C11 /* NotificationCenterEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenterEnum.swift; sourceTree = "<group>"; };
+		77381D7324FD648300612C11 /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		77381D7424FD648400612C11 /* NetworkStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
 		773BE71D24F9455100956E51 /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		773BE71E24F9455100956E51 /* FilterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterCollectionViewCell.xib; sourceTree = "<group>"; };
 		773BE72124F947BA00956E51 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -194,6 +202,26 @@
 				773BE71924F944F600956E51 /* MarketTableViewCell */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		77381D7024FD647700612C11 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				77381D7924FD64B000612C11 /* NetworkEnum */,
+				7777DB0E24F6167100F444B5 /* Endpoints.swift */,
+				77AD2B9124F69BA1007998B5 /* ViewControllersEnum.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		77381D7924FD64B000612C11 /* NetworkEnum */ = {
+			isa = PBXGroup;
+			children = (
+				77381D7324FD648300612C11 /* Endpoint.swift */,
+				77381D7424FD648400612C11 /* NetworkStatus.swift */,
+				77381D7124FD648300612C11 /* NotificationCenterEnum.swift */,
+			);
+			path = NetworkEnum;
 			sourceTree = "<group>";
 		};
 		773BE71924F944F600956E51 /* MarketTableViewCell */ = {
@@ -314,6 +342,7 @@
 		776AFA7324FADB1B00C9AD14 /* MarketDetailBottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				776AFA7124FAA86B00C9AD14 /* Dialog.storyboard */,
 				776AFA7424FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift */,
 			);
 			path = MarketDetailBottomSheet;
@@ -377,13 +406,13 @@
 		779F5F2224F6902C008FC3E8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7777DB0E24F6167100F444B5 /* Endpoints.swift */,
+				77381D7024FD647700612C11 /* Enum */,
 				779F5F2424F69067008FC3E8 /* Constants.swift */,
-				77AD2B9124F69BA1007998B5 /* ViewControllersEnum.swift */,
 				77463A0A24F6D24A009015C6 /* InternetConnectionManager.swift */,
 				77463A0C24F6D35F009015C6 /* Utility.swift */,
 				77022E6724F84BC80010872F /* AllExtension.swift */,
 				773BE72124F947BA00956E51 /* Colors.swift */,
+				77381D6E24FD646200612C11 /* NetworkManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -392,7 +421,6 @@
 			isa = PBXGroup;
 			children = (
 				778C7BC324F61134008450B7 /* Main.storyboard */,
-				776AFA7124FAA86B00C9AD14 /* Dialog.storyboard */,
 				774639EE24F69FB0009015C6 /* Splash */,
 				774639EF24F69FC4009015C6 /* Home */,
 				776AFA7324FADB1B00C9AD14 /* MarketDetailBottomSheet */,
@@ -659,16 +687,20 @@
 				77463A0924F6B8DE009015C6 /* ViewControllerPresenter.swift in Sources */,
 				773BE72A24F9544B00956E51 /* MarketFilterDelegate.swift in Sources */,
 				77463A0624F6A2F5009015C6 /* MarketDetailModel.swift in Sources */,
+				77381D7524FD648400612C11 /* NotificationCenterEnum.swift in Sources */,
 				774639F724F6A0A5009015C6 /* RequestService.swift in Sources */,
 				774639F824F6A0A5009015C6 /* RequestMethod.swift in Sources */,
 				77B45ED124F7E4AD00F92CB1 /* MarketTableViewDelegate.swift in Sources */,
+				77381D7724FD648400612C11 /* Endpoint.swift in Sources */,
 				774639FF24F6A0DA009015C6 /* ErrorResult.swift in Sources */,
 				776AFA7524FADB8600C9AD14 /* MarketDetailBottomSheetViewController.swift in Sources */,
 				77AD2B9224F69BA1007998B5 /* ViewControllersEnum.swift in Sources */,
 				773BE72224F947BA00956E51 /* Colors.swift in Sources */,
 				7777DB0B24F613EA00F444B5 /* SplashViewController.swift in Sources */,
 				774639F924F6A0A5009015C6 /* RequestHandler.swift in Sources */,
+				77381D6F24FD646200612C11 /* NetworkManager.swift in Sources */,
 				7758C66924F6F01300DA7F68 /* GET+TickerAPI.swift in Sources */,
+				77381D7824FD648400612C11 /* NetworkStatus.swift in Sources */,
 				77AD2B9024F69B16007998B5 /* Router.swift in Sources */,
 				774639FA24F6A0A5009015C6 /* RequestFactory.swift in Sources */,
 				77463A0D24F6D35F009015C6 /* Utility.swift in Sources */,

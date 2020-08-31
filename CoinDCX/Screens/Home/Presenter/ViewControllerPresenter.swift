@@ -11,11 +11,11 @@ import UIKit.UIViewController
 //MARK:- ViewControllerDelegate Protocol
 protocol ViewControllerDelegate {
     func reloadTableView()
-    func failedToLoadData()
     func selectTableViewRow(at index : Int)
     func reloadCollectionView()
     func changeColumnFilterIcon()
     func changePercentageFilterIcon()
+    func handleError(error : ErrorResult)
 }
 
 //MARK:- ViewControllerPresener
@@ -48,8 +48,7 @@ class ViewControllerPresener {
     public var errorResult : ErrorResult? {
         
         didSet{
-            print("Setting Error Result Successfully")
-            print(errorResult!)
+            viewControllerDelegate?.handleError(error: errorResult!)
         }
     }
     
@@ -78,9 +77,7 @@ class ViewControllerPresener {
     }
     
     //Flag for sorting the data in ascending and decending order
-    
     public var isColumnFilterSelected : Bool {
-        
         willSet{
             columSortAction(columnFilterFlag: newValue)
         }
@@ -119,38 +116,31 @@ class ViewControllerPresener {
     }
     
     //MARK:- Functions to fetch values
-    
     //Fetch the coin information from the market detail object
-    public func getCoinMarketInfo(at index : Int) -> (baseCurrencyShort : String, targetCurrencyShort : String, name : String, dcxName : String, imageUrl : String){
+    public func getCoinMarketInfo(at index : Int) -> (baseCurrencyShort : String, targetCurrencyShort : String, name : String, imageUrl : String, lastPrice : String, percentage : String){
         
         return (marketListModel?[index].baseCurrencyShortName ?? "",
                 marketListModel?[index].targetCurrencyShortName ?? "",
                 (marketListModel?[index].targetCurrencyName ?? ""),
-                (marketListModel?[index].coindcxName ?? ""),
-                Endpoints.imageUrl(coinName: marketListModel?[index].targetCurrencyShortName ?? "").path())
+                Endpoints.imageUrl(coinName: marketListModel?[index].targetCurrencyShortName ?? "").path(),
+                marketListModel?[index].ticker?.lastPrice ?? "",
+                marketListModel?[index].ticker?.change24_Hour ?? "")
     }
     
-    //Fetch the coin information from the ticker object
-    public func getLastPriceAndPercentage(coinDCXName name : String, at index : Int) -> (lastPrice : String, percentage : String){
+    //Fetch bottom sheet information
+    public func fetchBottomSheetInfo(at index : Int) -> (logo : String, targetCurrency : String, targetCurrecyShort : String,
+                                                         lastPrice : String, change : String, high : String, low : String,
+                                                         alpha : CGFloat)
+    {
         
-        let tickerModel = marketListModel?.first(where: { (tickerModel) -> Bool in
-            return tickerModel.coindcxName == name
-        })
-        
-        //marketListModel?[index].ticker = ticke
-        
-        return (tickerModel?.ticker?.lastPrice ?? "", tickerModel?.ticker?.change24_Hour ?? "")
-    }
-    
-    //Fetch the High & Low price from the ticker object
-    public func getHighAndLowPrice(coinDCXName name : String) -> (high : String, low : String){
-        
-        let tickerModel = marketListModel?.first(where: { (tickerModel) -> Bool in
-            return tickerModel.coindcxName == name
-        })
-
-        
-        return (tickerModel?.ticker?.high ?? "", tickerModel?.ticker?.low ?? "")
+        return (Endpoints.imageUrl(coinName: marketListModel?[index].targetCurrencyShortName ?? "").path(),
+                marketListModel?[index].targetCurrencyName ?? "",
+                marketListModel?[index].targetCurrencyShortName ?? "",
+                marketListModel?[index].ticker?.lastPrice ?? "",
+                marketListModel?[index].ticker?.change24_Hour ?? "",
+                marketListModel?[index].ticker?.high ?? "",
+                marketListModel?[index].ticker?.low ?? "",
+                CGFloat(fetchAlphaValue(percentage: Float(marketListModel?[index].ticker?.change24_Hour ?? "") ?? 0.0)))
     }
     
     //Fetch the alpha value of the percetage overlay view
@@ -336,12 +326,20 @@ class ViewControllerPresener {
         //If the search text is blank mean we have to load the original result again since user is not searching anything anymore
         if(text == ""){
             marketListModel = originalMarketList
-            return
+        }else{
+            //Filter the list based on target currency name
+            if let list = originalMarketList{
+                marketListModel = list.searchedhData(searchText: text)
+            }
         }
         
-        //Filter the list based on target currency name
-        if let list = originalMarketList{
-            marketListModel = list.searchedhData(searchText: text)
+        //If the user have selectd any filter then we will maintain that filter while applying above filter
+        if(isColumFilterSelectedFlag){
+            columSortAction(columnFilterFlag: isColumnFilterSelected)
+        }
+        
+        if(isChangeFilterSelectedFlag){
+            changePercentageSortAction(changeFilterFlag: isHourChangeFilterSelected)
         }
     }
     

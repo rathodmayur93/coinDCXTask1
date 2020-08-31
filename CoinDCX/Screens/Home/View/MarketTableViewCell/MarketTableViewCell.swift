@@ -66,8 +66,7 @@ class MarketTableViewCell: UITableViewCell {
     public func setupCell(at index : Int, presenter : ViewControllerPresener){
         
         //Fetching the coin information from the the viewController presenter
-        let (baseCurrencyShort, targetCurrencyShort, coinName, dcxName, coinImageUrl) = presenter.getCoinMarketInfo(at: index)
-        let (lastPrice, change) = presenter.getLastPriceAndPercentage(coinDCXName: dcxName, at: index)
+        let (baseCurrencyShort, targetCurrencyShort, coinName, coinImageUrl, lastPrice, change) = presenter.getCoinMarketInfo(at: index)
         
         //Converting the change intot he NSString so that we can access floatValue property
         let percentageFloat = (change as NSString).floatValue
