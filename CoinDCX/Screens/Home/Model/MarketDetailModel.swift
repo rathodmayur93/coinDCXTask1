@@ -23,6 +23,7 @@ struct MarketDetailModel: Codable, Hashable {
     let maxLeverage, maxLeverageShort: Int?
     let pair: String?
     let status: Status?
+    var ticker : TickerModel?
 
     enum CodingKeys: String, CodingKey {
         case coindcxName = "coindcx_name"
@@ -118,10 +119,26 @@ extension Array where Element == MarketDetailModel {
         }
     }
     
+    // Sort the array in ascending order based on the 24 hour change in percentage
+    func sortChangeAscending() -> [MarketDetailModel]{
+        return self.sorted { (obj1, obj2) -> Bool in
+            return ((Double(obj1.ticker?.change24_Hour ?? "") ?? 0.0) < (Double(obj2.ticker?.change24_Hour ?? "") ?? 0.0))
+        }
+    }
+    
+    // Sort the array in decending order based on the 24 hour change in percentage
+    func sortChangeDecending() -> [MarketDetailModel]{
+        return self.sorted { (obj1, obj2) -> Bool in
+            return ((Double(obj1.ticker?.change24_Hour ?? "") ?? 0.0) > (Double(obj2.ticker?.change24_Hour ?? "") ?? 0.0))
+        }
+    }
+    
     //Filter the array based on the searched text
     func searchedhData(searchText text : String) -> [MarketDetailModel] {
         return self.filter { (marketData) -> Bool in
             return (marketData.targetCurrencyName?.contains(text) ?? false)
         }
     }
+    
+    
 }

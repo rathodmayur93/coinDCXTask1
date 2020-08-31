@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xkx-gn-Zvd">
-                                <rect key="frame" x="0.0" y="626" width="414" height="270"/>
+                                <rect key="frame" x="0.0" y="656" width="414" height="240"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="80x-IF-Oh0">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
@@ -128,7 +128,7 @@
                                     <constraint firstItem="NOu-lk-poq" firstAttribute="leading" secondItem="9UL-4m-Wvq" secondAttribute="trailing" constant="24" id="MSl-Fq-dIP"/>
                                     <constraint firstItem="Ax5-YI-ul0" firstAttribute="top" secondItem="9UL-4m-Wvq" secondAttribute="bottom" constant="8" symbolic="YES" id="X5z-h9-dgG"/>
                                     <constraint firstItem="80x-IF-Oh0" firstAttribute="leading" secondItem="Xkx-gn-Zvd" secondAttribute="leading" id="Yep-9R-hFv"/>
-                                    <constraint firstAttribute="height" constant="270" id="aPF-Il-bKM"/>
+                                    <constraint firstAttribute="height" constant="240" id="aPF-Il-bKM"/>
                                     <constraint firstAttribute="trailing" secondItem="80x-IF-Oh0" secondAttribute="trailing" id="bhO-fq-f4a"/>
                                     <constraint firstAttribute="trailing" secondItem="der-pQ-OLP" secondAttribute="trailing" constant="20" id="dJY-H7-Uw8"/>
                                     <constraint firstItem="9UL-4m-Wvq" firstAttribute="leading" secondItem="Xkx-gn-Zvd" secondAttribute="leading" constant="20" id="hUm-Jd-bQr"/>

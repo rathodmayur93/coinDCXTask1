@@ -8,14 +8,17 @@
 import Foundation
 import UIKit.UIViewController
 
+//MARK:- ViewControllerDelegate Protocol
 protocol ViewControllerDelegate {
     func reloadTableView()
     func failedToLoadData()
     func selectTableViewRow(at index : Int)
     func reloadCollectionView()
     func changeColumnFilterIcon()
+    func changePercentageFilterIcon()
 }
 
+//MARK:- ViewControllerPresener
 class ViewControllerPresener {
     
     //MARK:- Variables
@@ -36,7 +39,6 @@ class ViewControllerPresener {
     
     //Storing the original result of market detail list and ticker list
     private var originalMarketList : [MarketDetailModel]?
-    private var originalTicketList : [TickerModel]?
     
     //Storing whether which filter user have selected
     private lazy var isColumFilterSelectedFlag = false
@@ -84,9 +86,9 @@ class ViewControllerPresener {
         }
     }
     
-    public var isHourChangeFilterSelected : Bool? {
-        didSet{
-            
+    public var isHourChangeFilterSelected : Bool {
+        willSet{
+            changePercentageSortAction(changeFilterFlag: newValue)
         }
     }
     
@@ -110,6 +112,7 @@ class ViewControllerPresener {
         
         //Setting up the filter flag as false
         isColumnFilterSelected = false
+        isHourChangeFilterSelected = false
         
         //Passing the reference of the presenter to the dataSource class
         passDataToDataSource()
@@ -128,23 +131,26 @@ class ViewControllerPresener {
     }
     
     //Fetch the coin information from the ticker object
-    public func getLastPriceAndPercentage(coinDCXName name : String) -> (lastPrice : String, percentage : String){
+    public func getLastPriceAndPercentage(coinDCXName name : String, at index : Int) -> (lastPrice : String, percentage : String){
         
-        let tickerModel = tickerModelList?.first(where: { (tickerModel) -> Bool in
-            return tickerModel.market == name
+        let tickerModel = marketListModel?.first(where: { (tickerModel) -> Bool in
+            return tickerModel.coindcxName == name
         })
         
-        return (tickerModel?.lastPrice ?? "", tickerModel?.change24_Hour ?? "")
+        //marketListModel?[index].ticker = ticke
+        
+        return (tickerModel?.ticker?.lastPrice ?? "", tickerModel?.ticker?.change24_Hour ?? "")
     }
     
     //Fetch the High & Low price from the ticker object
     public func getHighAndLowPrice(coinDCXName name : String) -> (high : String, low : String){
         
-        let tickerModel = tickerModelList?.first(where: { (tickerModel) -> Bool in
-            return tickerModel.market == name
+        let tickerModel = marketListModel?.first(where: { (tickerModel) -> Bool in
+            return tickerModel.coindcxName == name
         })
+
         
-        return (tickerModel?.high ?? "", tickerModel?.low ?? "")
+        return (tickerModel?.ticker?.high ?? "", tickerModel?.ticker?.low ?? "")
     }
     
     //Fetch the alpha value of the percetage overlay view
@@ -206,6 +212,8 @@ class ViewControllerPresener {
         searchDelegate?.viewControllerPresenter = self
     }
     
+    //MARK: Filtering Market Data
+    
     //Change the selected filter
     public func changeFilter(selectedAt index : Int){
         
@@ -228,8 +236,6 @@ class ViewControllerPresener {
         filterMarketData(filterName: list[index].filterName)
     }
     
-    //MARK: Filtering Market Data
-    
     // Filter out the market data based on the selected BASE CURRENCY SHORT NAME
     private func filterMarketData(filterName baseCurrencyShortName: String){
         
@@ -250,10 +256,13 @@ class ViewControllerPresener {
         if(isColumFilterSelectedFlag){
             columSortAction(columnFilterFlag: isColumnFilterSelected)
         }
+        
+        if(isChangeFilterSelectedFlag){
+            changePercentageSortAction(changeFilterFlag: isHourChangeFilterSelected)
+        }
     }
     
     //MARK: Column Filter Methods
-    
     //Sort the market data based on the columFilterFlag
     private func columSortAction(columnFilterFlag flag : Bool){
         
@@ -266,6 +275,7 @@ class ViewControllerPresener {
         
         //Make Column filter selected
         isColumFilterSelectedFlag = true
+        isChangeFilterSelectedFlag = false
         
         // Notify the viewController to change the column filter icon
         viewControllerDelegate?.changeColumnFilterIcon()
@@ -285,23 +295,38 @@ class ViewControllerPresener {
         }
     }
     
-    //MARK: Change Percentage Filter
     
-    //Sort the market data based on the 24 hour change rate
-    private func percentageChangeSortAction(columnFilterFlag flag : Bool){
+    //MARK: Change Percentage Filter
+    //Sort the market data based on the change 24 percentage
+    private func changePercentageSortAction(changeFilterFlag flag : Bool){
         
         //Sort the data depending on the column filter flag
         if(flag){
-            sortByTargetCurrencyInDecendingOrder()
+            sortByChangePercentageInDecendingOrder()
         }else{
-            sortByTargetCurrencyInAscendingOrder()
+            sortByChangePercentageInAscendingOrder()
         }
         
-        //Make Column filter selected
-        isColumFilterSelectedFlag = true
+        //Make change percentage filter selected
+        isColumFilterSelectedFlag = false
+        isChangeFilterSelectedFlag = true
         
         // Notify the viewController to change the column filter icon
-        viewControllerDelegate?.changeColumnFilterIcon()
+        viewControllerDelegate?.changePercentageFilterIcon()
+    }
+    
+    // Sort the data in Ascending Order based on the Target Currency Name
+    private func sortByChangePercentageInAscendingOrder(){
+        if let list = marketListModel {
+            marketListModel = list.sortChangeAscending()
+        }
+    }
+    
+    // Sort the data in Decending Order based on the Target Currency Name
+    private func sortByChangePercentageInDecendingOrder(){
+        if let list = marketListModel{
+            marketListModel = list.sortChangeDecending()
+        }
     }
     
     //MARK: Search Text Data Filter
@@ -318,6 +343,26 @@ class ViewControllerPresener {
         if let list = originalMarketList{
             marketListModel = list.searchedhData(searchText: text)
         }
+    }
+    
+    //Merge two array depending on their market names
+    private func mergeTwoList(){
+        
+        //Unwrapping the optional values
+        guard var marketList = marketListModel,
+              let tickerList = tickerModelList
+        else { return }
+        
+        //Loop throught the market list and merge respecitve ticker model with market list
+        for i in 0..<(marketList.count){
+            marketList[i].ticker = tickerList.first(where: { (tickerModel) -> Bool in
+                tickerModel.market == marketList[i].coindcxName
+            })
+        }
+        
+        //Assigning the merged list to the marketListModel
+        marketListModel = marketList
+        originalMarketList = marketList
     }
     
     //MARK:- TableView Row Selection Method
@@ -393,9 +438,9 @@ class ViewControllerPresener {
                 switch result{
                 case .success(let tickerModel):
                     self.tickerModelList = tickerModel
-                    self.originalTicketList = tickerModel
                     //Fetchinig the filter list based on the base currency pair
                     self.fetchFilterList()
+                    self.mergeTwoList()
                 case .failure(let error):
                     self.errorResult = error
                 }

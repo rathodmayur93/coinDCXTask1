@@ -166,7 +166,7 @@ class ViewController: UIViewController {
     
     //Change action method
     @objc private func changeTapAction(){
-        
+        viewControllerPresener.isHourChangeFilterSelected.toggle()
     }
 }
 
@@ -199,5 +199,11 @@ extension ViewController : ViewControllerDelegate {
     
     func changeColumnFilterIcon() {
         byCoinNameFilter.image = viewControllerPresener.isColumnFilterSelected ? UIImage(named: "ascendingArrow") : UIImage(named: "desecendingArrow")
+        hourChangeFilter.image = UIImage(named: "unselectedArrow")
+    }
+    
+    func changePercentageFilterIcon() {
+        hourChangeFilter.image = viewControllerPresener.isHourChangeFilterSelected ? UIImage(named: "ascendingArrow") : UIImage(named: "desecendingArrow")
+        byCoinNameFilter.image = UIImage(named: "unselectedArrow")
     }
 }

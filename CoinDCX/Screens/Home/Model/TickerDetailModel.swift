@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - TickerModelElement
-struct TickerModel: Codable {
+struct TickerModel: Codable, Hashable {
     let market: String
     let change24_Hour, high, low, volume: String?
     let lastPrice: String?
@@ -24,7 +24,7 @@ struct TickerModel: Codable {
     }
 }
 
-enum Ask: Codable {
+enum Ask: Codable, Hashable {
     case double(Double)
     case string(String)
     case null
@@ -55,6 +55,17 @@ enum Ask: Codable {
             try container.encode(x)
         case .null:
             try container.encodeNil()
+        }
+    }
+}
+
+extension Array where Element == TickerModel{
+    
+    // Filter the array based on the BASE CURRENCY SHORT NAME
+    func sortAscending(baseCurrencyShortName : String) -> [TickerModel]{
+        
+        return self.sorted { (obj1, obj2) -> Bool in
+            return (Float(obj1.change24_Hour?.lowercased() ?? "") ?? 0.0) > (Float(obj2.change24_Hour?.lowercased() ?? "") ?? 0.0)
         }
     }
 }

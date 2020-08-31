@@ -65,7 +65,7 @@ class MarketDetailBottomSheetViewController: UIViewController {
     private func setupPricesInfo(presenter vcPresenter : ViewControllerPresener, at atIndex : Int){
         
         //Setting the last trade price of the coin
-        let (lastPrice, percentage) = vcPresenter.getLastPriceAndPercentage(coinDCXName: vcPresenter.marketListModel?[atIndex].coindcxName ?? "")
+        let (lastPrice, percentage) = vcPresenter.getLastPriceAndPercentage(coinDCXName: vcPresenter.marketListModel?[atIndex].coindcxName ?? "", at: atIndex)
         
         //Setting up the last traded price
         lastTradedPriceLabel.text = lastPrice + " " + (vcPresenter.marketListModel?[atIndex].baseCurrencyShortName ?? "")
