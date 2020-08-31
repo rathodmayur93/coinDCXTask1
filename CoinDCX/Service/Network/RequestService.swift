@@ -47,8 +47,6 @@ final class RequestService {
             return nil
         }
         
-        print("API URL : \(requestedUrl)")
-        
         //Creating the URLRequest
         let request = RequestFactory.request(method: .GET, url: requestedUrl)
         

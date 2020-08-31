@@ -377,7 +377,6 @@ class ViewControllerPresener {
         
         //Check whether internet connection is there or not
         if !InternetConnectionManager.isConnectedToNetwork(){
-            print("No Internet Connection")
             errorResult = ErrorResult.custom(string: "No Internet Connection")
             return
         }
@@ -416,7 +415,6 @@ class ViewControllerPresener {
         
         //Check whether internet connection is there or not
         if !InternetConnectionManager.isConnectedToNetwork(){
-            print("No Internet Connection")
             errorResult = ErrorResult.custom(string: "No Internet Connection")
             return
         }

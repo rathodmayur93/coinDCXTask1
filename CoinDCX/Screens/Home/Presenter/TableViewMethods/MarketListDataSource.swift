@@ -20,7 +20,6 @@ class MarketListDataSource : MarketListData, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Market List Count \(viewControllerPresenter?.marketListModel?.count ?? 0)")
         return viewControllerPresenter?.marketListModel?.count ?? 0
     }
     

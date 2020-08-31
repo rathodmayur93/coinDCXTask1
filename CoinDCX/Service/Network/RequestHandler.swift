@@ -25,7 +25,6 @@ class RequestHandler {
                     completion(.success(list))
                 case .failure(let error):
                     // Handling the error events
-                    print("Network Error \(error)")
                     completion(.failure(.parser(string: "Unable to parse data " + error.localizedDescription)))
                     break
                 }
